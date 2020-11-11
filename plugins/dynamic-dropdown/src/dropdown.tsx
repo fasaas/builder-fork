@@ -5,11 +5,11 @@ import React, { useEffect, useState } from 'react';
 import { MenuItem } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { orchestrateSelections } from './selectionsOrchestrator';
-import {useObserver} from 'mobx-react';
+import {observer} from 'mobx-react';
 
 type Event =  React.ChangeEvent<{ value: string }>
 
-export const Component = (props: any) => {
+export const Component = observer((props: any) => {
   console.log("Component -> props", props)
 
   const [mappedSelections, setMappedSelections] = useState<{[key: string]: any[]}>({});
@@ -51,11 +51,11 @@ export const Component = (props: any) => {
       }
     };
     updateSelections();
-  }, [props.context.designerState.editingContentModel?.data, getDependenciesFrom(props)])
+  }, [getDependenciesFrom(props)])
   
   const possibleSelections = Object.keys(mappedSelections)
 
-  return useObserver(() =>
+  return ( 
     <React.Fragment>
     {
       possibleSelections.map((dimension: string) => {
@@ -70,7 +70,7 @@ export const Component = (props: any) => {
     }
     </React.Fragment>
   )
-};
+});
 
 Builder.registerEditor({
   name: 'dynamic-dropdown',
